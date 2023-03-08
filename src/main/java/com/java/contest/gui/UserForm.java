@@ -54,12 +54,16 @@ public class UserForm extends JFrame implements ActionListener {
         ta = new JTextArea();
         ta.setLineWrap(true);
         ta.setWrapStyleWord(true);
+        Font font = new Font("Times New Roman",Font.BOLD, 17);
+        ta.setFont(font);
+        ta.setText("New Node");
         JPanel pta = new JPanel(new BorderLayout());
         pta.setPreferredSize(new Dimension(300, 50));
         pta.setBorder(BorderFactory.createLineBorder(Color.black));
         pta.add(ta);
 
         t = new JTextPane();
+        t.setText("Type here...");
         JPanel pt = new JPanel(new BorderLayout());
         pt.setPreferredSize(new Dimension(300, 400));
         pt.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -81,33 +85,36 @@ public class UserForm extends JFrame implements ActionListener {
         }
 
         JMenuItem mi3 = new JMenuItem("Save");
+        JMenuItem mi4 = new JMenuItem("Delete");
 
         mi1.addActionListener(this);
         mi3.addActionListener(this);
+        mi4.addActionListener(this);
 
         m1.add(mi1);
         m1.add(mi2);
         m1.add(mi3);
+        m1.add(mi4);
         //todo: implement
 
         JMenu m2 = new JMenu("Edit");
 
         // Create menu items
-        JMenuItem mi4 = new JMenuItem("cut");
-        JMenuItem mi5 = new JMenuItem("copy");
-        JMenuItem mi6 = new JMenuItem("paste");
-        JMenuItem mi7 = new JMenuItem("insert image");
+        JMenuItem mi5 = new JMenuItem("cut");
+        JMenuItem mi6 = new JMenuItem("copy");
+        JMenuItem mi7 = new JMenuItem("paste");
+        JMenuItem mi8 = new JMenuItem("insert image");
 
 
-        mi4.addActionListener(this);
         mi5.addActionListener(this);
         mi6.addActionListener(this);
         mi7.addActionListener(this);
+        mi8.addActionListener(this);
 
-        m2.add(mi4);
         m2.add(mi5);
         m2.add(mi6);
         m2.add(mi7);
+        m2.add(mi8);
 
         JMenuItem mc = new JMenuItem("close");
 
@@ -138,44 +145,47 @@ public class UserForm extends JFrame implements ActionListener {
     {
         String s = e.getActionCommand();
 
-        if (s.equals("cut")) {
-            t.cut();
-        }
-        else if (s.equals("copy")) {
-            t.copy();
-        }
-
-        else if (s.equals("paste")) {
-            t.paste();
-        }
-        else if (s.equals("insert image")){
-            Image image = ClipboardManager.getImageFromClipboard();
-            if(image != null){
-                ImageIcon imageIcon = new ImageIcon(image);
-                nodeImgList.add(new NodeImg(t.getCaretPosition(), imageIcon));
-                t.insertIcon(imageIcon);
+        switch (s) {
+            case "cut" -> t.cut();
+            case "copy" -> t.copy();
+            case "paste" -> t.paste();
+            case "insert image" -> {
+                Image image = ClipboardManager.getImageFromClipboard();
+                if (image != null) {
+                    ImageIcon imageIcon = new ImageIcon(image);
+                    nodeImgList.add(new NodeImg(t.getCaretPosition(), imageIcon));
+                    t.insertIcon(imageIcon);
+                }
             }
-        }
-        else if (s.equals("Save")) {
-            save();
-            service.save();
-        }
-
-        else if (s.equals("New")) {
-            save();
-            id = service.createNode();
-            ta.setText("New Node");
-            t.setText("Type here...");
-            mi2.removeAll();
-            for (JMenuItem menuItem: service.transferNodes()){
-                mi2.add(menuItem);
+            case "Delete" ->{
+                service.deleteNode(id);
+                ta.setText("New node");
+                t.setText("Type here...");
+                mi2.removeAll();
+                for (JMenuItem menuItem : service.transferNodes()) {
+                    mi2.add(menuItem);
+                }
+                mb.revalidate();
             }
-            mb.revalidate();
-
-        }
-        else if (s.equals("close")) {
-            f.setVisible(false);
-            service.save();
+            case "Save" -> {
+                save();
+                service.save();
+            }
+            case "New" -> {
+                save();
+                id = service.createNode();
+                ta.setText("New Node");
+                t.setText("Type here...");
+                mi2.removeAll();
+                for (JMenuItem menuItem : service.transferNodes()) {
+                    mi2.add(menuItem);
+                }
+                mb.revalidate();
+            }
+            case "close" -> {
+                f.setVisible(false);
+                service.save();
+            }
         }
     }
 
