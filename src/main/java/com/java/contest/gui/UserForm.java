@@ -158,6 +158,7 @@ public class UserForm extends JFrame implements ActionListener {
         }
         else if (s.equals("Save")) {
             save();
+            service.save();
         }
 
         else if (s.equals("New")) {
@@ -174,6 +175,7 @@ public class UserForm extends JFrame implements ActionListener {
         }
         else if (s.equals("close")) {
             f.setVisible(false);
+            service.save();
         }
     }
 

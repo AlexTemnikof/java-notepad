@@ -7,10 +7,11 @@ import com.java.contest.service.tools.InitJMenuItem;
 import com.java.contest.service.tools.Serialization;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service implements IService {
+public class Service implements IService, Serializable {
 
     private final ArrayList<Node> nodes;
 
@@ -64,6 +65,6 @@ public class Service implements IService {
     }
 
     public void save(){
-        Serialization.serialize();
+        Serialization.serialize(this);
     }
 }

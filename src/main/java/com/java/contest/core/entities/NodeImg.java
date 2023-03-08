@@ -1,8 +1,9 @@
 package com.java.contest.core.entities;
 
 import javax.swing.*;
+import java.io.Serializable;
 
-public class NodeImg {
+public class NodeImg implements Serializable {
     private Integer index;
     private ImageIcon img;
 

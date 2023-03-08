@@ -1,11 +1,12 @@
 package com.java.contest.core.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Node {
+public class Node implements Serializable {
 
     private final String id;
     private String header;
