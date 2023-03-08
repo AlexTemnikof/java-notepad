@@ -54,13 +54,16 @@ public class Service implements IService, Serializable {
         return nodes.stream().filter(item -> item.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public void saveNode(String id, String header, String text, ArrayList<NodeImg> images){
+    public String saveNode(String id, String header, String text, ArrayList<NodeImg> images){
         Node node = findNodeById(id);
-        if (node != null)
+        if (node != null) {
             node.updateFields(header, text, images);
+            return node.getId();
+        }
         else{
             Node newNode = createNode(header);
             newNode.updateFields(header, text, images);
+            return newNode.getId();
         }
     }
 

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 public abstract class Deserialization {
-    //todo: implement
     public static Service deserialize(){
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/main/resources/service.bin")))
         {

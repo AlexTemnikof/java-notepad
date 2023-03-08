@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
 public class Serialization {
-    //todo: implement
     public static void serialize(Service service){
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("src/main/resources/service.bin")))
         {

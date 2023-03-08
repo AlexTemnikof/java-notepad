@@ -95,7 +95,7 @@ public class UserForm extends JFrame implements ActionListener {
         m1.add(mi2);
         m1.add(mi3);
         m1.add(mi4);
-        //todo: implement
+
 
         JMenu m2 = new JMenu("Edit");
 
@@ -190,7 +190,12 @@ public class UserForm extends JFrame implements ActionListener {
     }
 
     private void save(){
-        service.saveNode(id, ta.getText(), t.getText(), nodeImgList);
+        id = service.saveNode(id, ta.getText(), t.getText(), nodeImgList);
+        mi2.removeAll();
+        for (JMenuItem menuItem : service.transferNodes()) {
+            mi2.add(menuItem);
+        }
+        mb.revalidate();
     }
 
     private static void init(){
