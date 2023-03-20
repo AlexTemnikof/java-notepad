@@ -1,7 +1,7 @@
 package com.java.contest.gui;
 
-import com.java.contest.core.entities.NodeImg;
-import com.java.contest.service.iservices.IService;
+import com.java.contest.core.entities.NoteImg;
+import com.java.contest.service.iservices.Service;
 import com.java.contest.service.tools.ClipboardManager;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ public class UserForm extends JFrame implements ActionListener {
     private static JTextArea ta;
     private static JTextPane t;
 
-    private static ArrayList<NodeImg> nodeImgList;
+    private static ArrayList<NoteImg> noteImgList;
 
     // Frame
     JFrame f;
@@ -24,16 +24,16 @@ public class UserForm extends JFrame implements ActionListener {
 
     JMenu mi2;
 
-    IService service;
+    Service service;
 
     static String id;
 
     // Constructor
-    public UserForm(IService service)
+    public UserForm(Service service)
     {
         this.service = service;
 
-        nodeImgList = new ArrayList<>();
+        noteImgList = new ArrayList<>();
 
         // Create a frame
         f = new JFrame("Nodes");
@@ -80,7 +80,7 @@ public class UserForm extends JFrame implements ActionListener {
 
         mi2 = new JMenu("Open");
 
-        for (JMenuItem menuItem: service.transferNodes()){
+        for (JMenuItem menuItem: service.transferNotes()){
             mi2.add(menuItem);
         }
 
@@ -153,16 +153,16 @@ public class UserForm extends JFrame implements ActionListener {
                 Image image = ClipboardManager.getImageFromClipboard();
                 if (image != null) {
                     ImageIcon imageIcon = new ImageIcon(image);
-                    nodeImgList.add(new NodeImg(t.getCaretPosition(), imageIcon));
+                    noteImgList.add(new NoteImg(t.getCaretPosition(), imageIcon));
                     t.insertIcon(imageIcon);
                 }
             }
             case "Delete" ->{
-                service.deleteNode(id);
+                service.deleteNote(id);
                 ta.setText("New node");
                 t.setText("Type here...");
                 mi2.removeAll();
-                for (JMenuItem menuItem : service.transferNodes()) {
+                for (JMenuItem menuItem : service.transferNotes()) {
                     mi2.add(menuItem);
                 }
                 mb.revalidate();
@@ -173,11 +173,11 @@ public class UserForm extends JFrame implements ActionListener {
             }
             case "New" -> {
                 save();
-                id = service.createNode();
+                id = service.createNote();
                 ta.setText("New Node");
                 t.setText("Type here...");
                 mi2.removeAll();
-                for (JMenuItem menuItem : service.transferNodes()) {
+                for (JMenuItem menuItem : service.transferNotes()) {
                     mi2.add(menuItem);
                 }
                 mb.revalidate();
@@ -185,14 +185,15 @@ public class UserForm extends JFrame implements ActionListener {
             case "close" -> {
                 f.setVisible(false);
                 service.save();
+                System.exit(0);
             }
         }
     }
 
     private void save(){
-        id = service.saveNode(id, ta.getText(), t.getText(), nodeImgList);
+        id = service.saveNote(id, ta.getText(), t.getText(), noteImgList);
         mi2.removeAll();
-        for (JMenuItem menuItem : service.transferNodes()) {
+        for (JMenuItem menuItem : service.transferNotes()) {
             mi2.add(menuItem);
         }
         mb.revalidate();
@@ -203,13 +204,13 @@ public class UserForm extends JFrame implements ActionListener {
         t.setText("Welcome! You can type here...");
     }
 
-    private static void init(String ident, String header, String text, ArrayList<NodeImg> images){
-        nodeImgList = images;
+    private static void init(String ident, String header, String text, ArrayList<NoteImg> images){
+        noteImgList = images;
         id = ident;
         ta.setText(header);
         t.setText(text);
         if (images != null) {
-            for (NodeImg img : images) {
+            for (NoteImg img : images) {
                 t.setCaretPosition(img.getIndex());
                 t.insertIcon(img.getImg());
             }
@@ -217,18 +218,18 @@ public class UserForm extends JFrame implements ActionListener {
     }
 
 
-    public static void open(String id, String header, String text, ArrayList<NodeImg> imgList){
+    public static void open(String id, String header, String text, ArrayList<NoteImg> imgList){
         init(id, header, text, imgList);
     }
 
 
-    public static void main(IService service)
+    public static void main(Service service)
     {
         UserForm e = new UserForm(service);
         init();
     }
 
-    public static void main(IService service, String id, String header, String text, ArrayList<NodeImg> images){
+    public static void main(Service service, String id, String header, String text, ArrayList<NoteImg> images){
         UserForm e = new UserForm(service);
         e.init(id, header, text, images);
     }

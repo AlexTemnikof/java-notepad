@@ -3,26 +3,25 @@ package com.java.contest.core.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-public class Node implements Serializable {
+public class Note implements Serializable {
 
     private final String id;
     private String header;
     private String bodyText;
-    private ArrayList<NodeImg> images;
+    private ArrayList<NoteImg> images;
     private Date lastEditDate;
 
-    public Node(){
+    public Note(){
         id = UUID.randomUUID().toString();
         header = "New node";
         bodyText = "Type here...";
-        images = new ArrayList<NodeImg>();
+        images = new ArrayList<NoteImg>();
         lastEditDate = new Date();
     }
 
-    public Node(String header){
+    public Note(String header){
         id = UUID.randomUUID().toString();
         this.header = header;
         bodyText = "Write here...";
@@ -30,8 +29,8 @@ public class Node implements Serializable {
         lastEditDate = new Date();
     }
 
-    Node(String header, String bodyText,
-         ArrayList<NodeImg> images, Date lastEditDate){
+    Note(String header, String bodyText,
+         ArrayList<NoteImg> images, Date lastEditDate){
         id = UUID.randomUUID().toString();
         this.header = header;
         this.bodyText = bodyText;
@@ -39,10 +38,10 @@ public class Node implements Serializable {
         this.lastEditDate = lastEditDate;
     }
 
-    public void updateFields(String header, String bodyText, ArrayList<NodeImg> nodeImgArrayList){
+    public void updateFields(String header, String bodyText, ArrayList<NoteImg> noteImgArrayList){
         this.header = header;
         this.bodyText = bodyText;
-        this.images = nodeImgArrayList;
+        this.images = noteImgArrayList;
     }
 
     public void textEdit(String text){
@@ -60,7 +59,7 @@ public class Node implements Serializable {
         return bodyText;
     }
 
-    public ArrayList<NodeImg> getImages(){
+    public ArrayList<NoteImg> getImages(){
         return images;
     }
 
